@@ -9,6 +9,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
@@ -71,7 +72,7 @@ public class ArticleController {
     @PostMapping("/filter")
     @ResponseStatus(HttpStatus.OK)
     public Collection<Article> getArticlesFilter(@RequestBody RequestDto requestDto) {
-        PageRequest pageable = new PageRequestDto().getPageable(requestDto.getPageRequestDto());
-        return articleService.getArticles(requestDto);
+        Pageable pageable= new PageRequestDto().getPageable(requestDto.getPageRequestDto());
+        return articleService.getArticles(requestDto, pageable);
     }
 }

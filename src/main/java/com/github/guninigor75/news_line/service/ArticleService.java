@@ -6,6 +6,7 @@ import com.github.guninigor75.news_line.dto.PathArticle;
 import com.github.guninigor75.news_line.dto.RequestDto;
 import com.github.guninigor75.news_line.entity.Article;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
@@ -25,5 +26,5 @@ public interface ArticleService {
     @Transactional
     ArticleDto updateArticle(Long id, PathArticle pathArticle);
 
-    Collection<Article> getArticles(RequestDto requestDto);
+    Collection<Article> getArticles(RequestDto requestDto, Pageable pageable);
 }

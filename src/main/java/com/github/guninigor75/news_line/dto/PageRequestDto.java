@@ -3,6 +3,7 @@ package com.github.guninigor75.news_line.dto;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 
 import java.util.Objects;
@@ -18,7 +19,7 @@ public class PageRequestDto {
 
     private String sortByColumn = "id";
 
-    public PageRequest getPageable(PageRequestDto dto) {
+    public Pageable getPageable(PageRequestDto dto) {
         Integer page = Objects.nonNull(dto.getPageNo()) ? dto.getPageNo() : this.pageNo;
         Integer size = Objects.nonNull(dto.getPageSize()) ? dto.getPageSize(): this.pageSize;
         Sort.Direction sort = Objects.nonNull(dto.getSort()) ? dto.getSort(): this.sort;

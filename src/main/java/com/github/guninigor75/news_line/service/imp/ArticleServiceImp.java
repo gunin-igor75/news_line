@@ -1,9 +1,6 @@
 package com.github.guninigor75.news_line.service.imp;
 
-import com.github.guninigor75.news_line.dto.ArticleDto;
-import com.github.guninigor75.news_line.dto.CreateArticle;
-import com.github.guninigor75.news_line.dto.PathArticle;
-import com.github.guninigor75.news_line.dto.RequestDto;
+import com.github.guninigor75.news_line.dto.*;
 import com.github.guninigor75.news_line.entity.Article;
 import com.github.guninigor75.news_line.entity.Category;
 import com.github.guninigor75.news_line.handler_exception.ArticleException;
@@ -16,6 +13,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -38,8 +36,8 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public Article getByTitle(String title) {
-        return articleRepository.findByTitle(title).orElseThrow( () ->{
-                    String message =  String.format("Новость с таким именем %s не существует", title);
+        return articleRepository.findByTitle(title).orElseThrow(() -> {
+                    String message = String.format("Новость с таким именем %s не существует", title);
                     log.debug(message);
                     return new ArticleException(message);
                 }
@@ -48,8 +46,8 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public Article findById(long id) {
-        return articleRepository.findById(id).orElseThrow( () ->{
-                    String message =  String.format("Новость с таким id %d не существует", id);
+        return articleRepository.findById(id).orElseThrow(() -> {
+                    String message = String.format("Новость с таким id %d не существует", id);
                     log.debug(message);
                     return new ArticleException(message);
                 }
@@ -98,9 +96,10 @@ public class ArticleServiceImp implements ArticleService {
     }
 
     @Override
-    public Collection<Article> getArticles(RequestDto requestDto) {
+    public Collection<Article> getArticles(RequestDto requestDto, Pageable pageable) {
         Specification<Article> specification =
                 filterSpecification.getSearchSpecification(requestDto.getSearchRequestDtos(), requestDto.getGlobalOperator());
-        return articleRepository.findAll(specification);
+        Page<Article> all = articleRepository.findAll(specification, pageable);
+        return all.getContent();
     }
 }
