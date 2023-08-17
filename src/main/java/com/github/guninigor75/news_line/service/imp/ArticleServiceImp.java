@@ -21,7 +21,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collection;
-import java.util.List;
 import java.util.Optional;
 
 @Slf4j
@@ -100,7 +99,8 @@ public class ArticleServiceImp implements ArticleService {
 
     @Override
     public Collection<Article> getArticles(RequestDto requestDto) {
-        Specification<Article> specification = filterSpecification.getearchSpecification(requestDto.getSearchRequestDto());
+        Specification<Article> specification =
+                filterSpecification.getSearchSpecification(requestDto.getSearchRequestDtos(), requestDto.getGlobalOperator());
         return articleRepository.findAll(specification);
     }
 }

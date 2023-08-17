@@ -8,4 +8,16 @@ import lombok.Setter;
 public class SearchRequestDto {
     private String column;
     private String value;
+    private String joinTable;
+    private Operator operator;
+
+
+
+    public enum Operator{
+        EQUAL,
+        LIKE,
+        IN,
+        JOIN;
+    }
 }
+

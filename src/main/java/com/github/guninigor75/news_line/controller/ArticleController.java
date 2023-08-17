@@ -1,9 +1,6 @@
 package com.github.guninigor75.news_line.controller;
 
-import com.github.guninigor75.news_line.dto.ArticleDto;
-import com.github.guninigor75.news_line.dto.CreateArticle;
-import com.github.guninigor75.news_line.dto.PathArticle;
-import com.github.guninigor75.news_line.dto.RequestDto;
+import com.github.guninigor75.news_line.dto.*;
 import com.github.guninigor75.news_line.entity.Article;
 import com.github.guninigor75.news_line.service.ArticleService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -17,7 +14,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Collection;
-import java.util.List;
 
 @RestController
 @RequestMapping("/articles")
@@ -49,7 +45,7 @@ public class ArticleController {
     )
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
-    public Collection<Article> getAllArticles() {
+    public Collection<Article> getArticles() {
         PageRequest page = PageRequest.of(0, 12, Sort.by("createdAt").descending());
         return articleService.findAll(page);
     }
@@ -72,8 +68,10 @@ public class ArticleController {
         return articleService.updateArticle(id, pathArticle);
     }
 
-    @PostMapping("/specification")
-    public Collection<Article> getArticles(@RequestBody RequestDto requestDto) {
+    @PostMapping("/filter")
+    @ResponseStatus(HttpStatus.OK)
+    public Collection<Article> getArticlesFilter(@RequestBody RequestDto requestDto) {
+        PageRequest pageable = new PageRequestDto().getPageable(requestDto.getPageRequestDto());
         return articleService.getArticles(requestDto);
     }
 }
